@@ -52,7 +52,7 @@ Thumbs.db
 /data/db
 
 # dotenv environment variables file
-.env
+# .env
 
 # Mac OS
 .DS_Store
