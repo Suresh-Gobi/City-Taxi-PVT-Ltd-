@@ -1,9 +1,15 @@
 const express = require("express");
-const { signup, verifyEmail } = require("../Controllers/auth.controller");
+const { signup, login, verifyEmail } = require("../Controllers/auth.controller");
+const { driverSignup, driverlogin, verifyDriverEmail } = require("../Controllers/driverAuth.controller");
 
 const router = express.Router();
 
 router.post("/signup", signup);
-router.post("/verify/:otp", verifyEmail);
+router.post("/login", login);
+router.post("user/verify/:otp", verifyEmail);
+
+router.post("/driversignup", driverSignup);
+router.post("/driverlogin", driverlogin);
+router.post("driver/verify/:otp", verifyDriverEmail);
 
 module.exports = router;

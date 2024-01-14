@@ -1,14 +1,17 @@
-const User = require("../Models/User.model.js");
+const Driver = require("../Models/Driver.model.js");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
-const { sendVerificationEmail } = require("../Utils/verificationEmail.js");
+const { 
+  sendVerificationEmail,
+} = require("../Utils/driverVerificationEmail.js");
 
-const signup = async (req, res, next) => {
+const driverSignup = async (req, res, next) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, fname, lname, address, phone, password } =
+      req.body;
 
-    const existingUser = await User.findOne({ username });
+    const existingUser = await Driver.findOne({ username });
 
     if (existingUser) {
       return res.status(409).json({ error: "Username already exists" });
@@ -20,9 +23,18 @@ const signup = async (req, res, next) => {
 
     const hashPassword = bcrypt.hashSync(password, 10);
 
-    const newUser = new User({ username, email, password: hashPassword, otp });
+    const newDriver = new Driver({
+      username,
+      email,
+      fname,
+      lname,
+      address,
+      phone,
+      password: hashPassword,
+      otp,
+    });
 
-    await newUser.save();
+    await newDriver.save();
 
     res.status(201).json({ message: "Verification link sent to your email." });
   } catch (error) {
@@ -31,18 +43,18 @@ const signup = async (req, res, next) => {
   }
 };
 
-const verifyEmail = async (req, res, next) => {
+const verifyDriverEmail = async (req, res, next) => {
   try {
     const { otp } = req.body;
 
-    const user = await User.findOne({ otp });
+    const driver = await Driver.findOne({ otp });
 
-    if (!user) {
+    if (!driver) {
       return res.status(404).json({ error: "Invalid verification token" });
     }
 
-    user.verified = true;
-    await user.save();
+    driver.verified = true;
+    await driver.save();
 
     res.status(200).json({ message: "Email verification successful" });
   } catch (error) {
@@ -51,12 +63,12 @@ const verifyEmail = async (req, res, next) => {
   }
 };
 
-const login = async (req, res, next) => {
+const driverlogin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
     // Find the user by email
-    const user = await User.findOne({ email });
+    const user = await Driver.findOne({ email });
 
     // Check if the user exists
     if (!user) {
@@ -72,7 +84,7 @@ const login = async (req, res, next) => {
 
     // If email and password are valid, generate a JWT
     const token = jwt.sign({ userId: user._id }, "your-secret-key", {
-      expiresIn: "1h", // You can customize the expiration time
+      expiresIn: "6h", // You can customize the expiration time
     });
 
     // Send the token as a response
@@ -84,7 +96,7 @@ const login = async (req, res, next) => {
 };
 
 module.exports = {
-  signup,
-  verifyEmail,
-  login,
+  driverSignup,
+  verifyDriverEmail,
+  driverlogin,
 };

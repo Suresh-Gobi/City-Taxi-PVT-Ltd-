@@ -9,7 +9,7 @@ const authRouters = require("./Routes/Auth.routes.js");
 dotenv.config();
 
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(process.env.MONGO)
   .then(() => {
     console.log("Connected to MongoDB");
   })
