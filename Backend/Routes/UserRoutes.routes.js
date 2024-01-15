@@ -1,8 +1,14 @@
 const express = require("express");
-const { test } = require("../Controllers/user.controller"); // Use require here
+const {
+  search,
+  addRoute,
+  allroute,
+} = require("../Controllers/user.controller");
 
 const router = express.Router();
 
-router.get("/test", test);
+router.get("/search", search);
+router.post("/addRoute", addRoute);
+router.get("/allroute", allroute);
 
-module.exports = router; // Use module.exports for CommonJS
+module.exports = router;
