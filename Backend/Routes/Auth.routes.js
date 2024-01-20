@@ -1,4 +1,5 @@
 const express = require("express");
+const {auth} = require("../Middleware/authentication");
 const { signup, login, verifyEmail } = require("../Controllers/auth.controller");
 const { driverSignup, driverlogin, verifyDriverEmail } = require("../Controllers/driverAuth.controller");
 
