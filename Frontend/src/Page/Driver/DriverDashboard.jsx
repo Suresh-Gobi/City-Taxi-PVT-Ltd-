@@ -9,7 +9,7 @@ import { Menu } from "antd";
 // Lazy-loaded dummy components
 const Overview = lazy(() => import("./Dashboard/Overview"));
 
-const VehicleDetails = lazy(() => import("./VehicleDetails"));
+const VehicleDetails = lazy(() => import("./Vehicle/VehicleDetails"));
 
 function getItem(label, key, icon, children, type) {
   return {

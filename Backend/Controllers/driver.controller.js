@@ -13,22 +13,44 @@ const getAllCars = async () => {
   }
 };
 
-const addCar = async (driverId, model, no, status) => {
+const addCarToLoggedInDriver = async (req, res) => {
   try {
+    // Extract the token from the request headers
+    const token = req.headers.authorization;
+
+    if (!token) {
+      return res.status(401).json({ success: false, message: 'Unauthorized' });
+    }
+
+    // Verify the token and extract the driver ID
+    const decodedToken = jwt.verify(token.slice(7), 'your-secret-key');
+    const driverId = decodedToken.userId;
+
+    // Check if the driver exists
+    const driver = await Driver.findById(driverId);
+
+    if (!driver) {
+      return res.status(404).json({ success: false, message: 'Driver not found' });
+    }
+
+    // Create a new car document
     const newCar = new Car({
       driver: driverId,
-      model,
-      no,
-      status,
+      model: req.body.model,
+      no: req.body.no,
+      status: req.body.status,
     });
 
+    // Save the new car document
     const savedCar = await newCar.save();
-    return savedCar;
+
+    return res.status(201).json({ success: true, car: savedCar });
   } catch (error) {
-    console.error("Add car error:", error);
-    throw error;
+    console.error('Error adding car:', error);
+    return res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
+
 
 const removeCar = async (carId) => {
   try {
@@ -83,7 +105,7 @@ const getDriverInfo = async (req, res) => {
 
 
 module.exports = {
-  addCar,
+  addCarToLoggedInDriver,
   getAllCars,
   removeCar,
   updateCar,
