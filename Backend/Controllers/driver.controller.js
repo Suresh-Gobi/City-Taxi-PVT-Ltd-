@@ -83,15 +83,35 @@ const removeCar = async (carId) => {
   }
 };
 
-const updateCar = async (carId, updates) => {
+const updateCar = async (req, res) => {
   try {
-    const updatedCar = await Car.findByIdAndUpdate(carId, updates, {
-      new: true,
-    });
-    return updatedCar;
+    const { carId } = req.params;
+    const { model, no, status } = req.body;
+
+    // Verify the token and extract the driver ID
+    const decodedToken = jwt.verify(req.headers.authorization.slice(7), 'your-secret-key');
+    const driverId = decodedToken.userId;
+
+    // Check if the driver exists
+    // This step is optional, and you may skip it depending on your use case
+    // If you want to enforce that the driver owns the car being updated
+    const driverOwnsCar = await Car.exists({ _id: carId, driver: driverId });
+
+    if (!driverOwnsCar) {
+      return res.status(403).json({ message: 'Unauthorized to update this car' });
+    }
+
+    // Update car details
+    const updatedCar = await Car.findByIdAndUpdate(carId, { model, no, status }, { new: true });
+
+    if (!updatedCar) {
+      return res.status(404).json({ message: 'Car not found' });
+    }
+
+    res.status(200).json(updatedCar);
   } catch (error) {
-    console.error("Update car error:", error);
-    throw error;
+    console.error('Error during updateCar:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
