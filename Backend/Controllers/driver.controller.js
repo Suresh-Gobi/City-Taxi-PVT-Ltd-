@@ -3,13 +3,34 @@ const Car = require("../Models/Car.model");
 const Driver = require("../Models/Driver.model.js");
 const jwt = require("jsonwebtoken");
 
-const getAllCars = async () => {
+const getAllCarsForDriver = async (req, res) => {
   try {
-    const allCars = await Car.find();
-    return allCars;
+    // Extract the token from the request headers
+    const token = req.headers.authorization;
+
+    if (!token) {
+      return res.status(401).json({ success: false, message: 'Unauthorized' });
+    }
+
+    // Verify the token and extract the driver ID
+    const decodedToken = jwt.verify(token.slice(7), 'your-secret-key');
+    const driverId = decodedToken.userId;
+
+    // Check if the driver exists
+    const driver = await Driver.findById(driverId);
+
+    if (!driver) {
+      return res.status(404).json({ success: false, message: 'Driver not found' });
+    }
+
+    // Fetch all car details for the driver from the database
+    const carsForDriver = await Car.find({ driver: driverId });
+
+    // Send the car details as a JSON response
+    res.status(200).json({ success: true, cars: carsForDriver });
   } catch (error) {
-    console.error("Get all cars error:", error);
-    throw error;
+    console.error('Error fetching car details for driver:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
 
@@ -106,7 +127,7 @@ const getDriverInfo = async (req, res) => {
 
 module.exports = {
   addCarToLoggedInDriver,
-  getAllCars,
+  getAllCarsForDriver,
   removeCar,
   updateCar,
   getDriverInfo,
