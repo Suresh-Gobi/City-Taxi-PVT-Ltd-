@@ -7,6 +7,8 @@ import {
 import { Menu } from "antd";
 
 // Lazy-loaded dummy components
+const Overview = lazy(() => import("./Dashboard/Overview"));
+
 const VehicleDetails = lazy(() => import("./VehicleDetails"));
 
 function getItem(label, key, icon, children, type) {
@@ -52,6 +54,7 @@ const App = () => {
       />
       {/* Conditionally render the content based on the selected menu item */}
       <Suspense fallback={<div>Loading...</div>}>
+      {selectedMenuItem === "1" && <Overview />}
         {selectedMenuItem === "2" && <VehicleDetails />}
       </Suspense>
     </>

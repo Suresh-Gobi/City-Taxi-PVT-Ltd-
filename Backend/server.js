@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const cors = require('cors');
 const userRoutes = require("./Routes/UserRoutes.routes.js");
 const authRouters = require("./Routes/Auth.routes.js");
+const driverRouters = require("./Routes/Driver.routes.js");
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(cors({ origin: '*' }));
 app.use(bodyParser.json());
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRouters);
+app.use("/api/driver", driverRouters);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

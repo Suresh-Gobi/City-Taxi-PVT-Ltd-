@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const Car = require("../Models/Car.model");
+const Driver = require("../Models/Driver.model.js");
+const jwt = require("jsonwebtoken");
 
 const getAllCars = async () => {
   try {
@@ -50,9 +52,40 @@ const updateCar = async (carId, updates) => {
   }
 };
 
+const getDriverInfo = async (req, res) => {
+  try {
+    // Extract the token from the request headers
+    const token = req.headers.authorization;
+
+    if (!token) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    // Verify the token and extract the driver ID
+    const decodedToken = jwt.verify(token.slice(7), 'your-secret-key');
+    const driverId = decodedToken.userId;
+
+    // Use Mongoose to find the driver by ID
+    const driver = await Driver.findById(driverId);
+
+    if (!driver) {
+      console.log('Driver not found');
+      return res.status(404).json({ message: 'Driver not found' });
+    }
+
+    // Send the driver information as a JSON response
+    res.status(200).json(driver);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+
 module.exports = {
   addCar,
   getAllCars,
   removeCar,
   updateCar,
+  getDriverInfo,
 };

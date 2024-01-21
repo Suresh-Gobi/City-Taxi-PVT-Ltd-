@@ -32,7 +32,7 @@ const UserLogin = () => {
         // Save the token to local storage
         localStorage.setItem('token', data.token);
 
-        navigate('/dashboard');
+        navigate('/driver/dash');
         console.log(data); // Handle success, e.g., store token in state or redirect to dashboard
       } else {
         const errorData = await response.json();
