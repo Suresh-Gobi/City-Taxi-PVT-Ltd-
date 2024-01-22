@@ -39,4 +39,35 @@ const signupAdmin = async (req, res) => {
   }
 };
 
-module.exports = { signupAdmin };
+const adminLogin = async (req, res) => {
+    try {
+      const { email, password } = req.body;
+  
+      // Check if the user with the given email exists
+      const user = await Admin.findOne({ email });
+  
+      if (!user) {
+        return res.status(404).json({ success: false, message: 'User not found' });
+      }
+  
+      // Compare the provided password with the hashed password in the database
+      const passwordMatch = await bcrypt.compare(password, user.password);
+  
+      if (!passwordMatch) {
+        return res.status(401).json({ success: false, message: 'Invalid password' });
+      }
+  
+      // If the password is correct, generate a JSON Web Token (JWT)
+      const token = jwt.sign({ userId: user._id, email: user.email }, 'your-secret-key', {
+        expiresIn: '1h', // Token expiration time
+      });
+  
+      // Send the token as a response
+      res.status(200).json({ success: true, token });
+    } catch (error) {
+      console.error('Error during login:', error);
+      res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+  };
+
+module.exports = { signupAdmin, adminLogin };
