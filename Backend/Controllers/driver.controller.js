@@ -4,7 +4,7 @@ const Driver = require("../Models/Driver.model.js");
 const jwt = require("jsonwebtoken");
 
 const getAllCarsForDriver = async (req, res) => {
-  try {
+  try { 
     // Extract the token from the request headers
     const token = req.headers.authorization;
 
