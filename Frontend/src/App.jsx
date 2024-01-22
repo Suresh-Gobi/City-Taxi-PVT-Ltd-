@@ -10,6 +10,10 @@ import DriverLogin from "./Page/Login/DriverLogin";
 
 import DriverDashboard from "./Page/Driver/DriverDashboard";
 
+import AdminDashboard from "./Page/Admin/Admin";
+
+import AdminLogin from "./Page/Admin/login";
+
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
@@ -26,6 +30,8 @@ function App() {
           <Route path="/user/login" element={<UserLogin />} />
           <Route path="/driver/login" element={<DriverLogin />} />
           <Route path="/driver/dash" element={<DriverDashboard />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dash" element={<AdminDashboard />} />
         </Routes>
       </BrowserRouter>
     </>
