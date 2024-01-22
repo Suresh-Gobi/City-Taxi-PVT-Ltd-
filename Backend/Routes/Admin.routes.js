@@ -17,8 +17,8 @@ router.post("/signup", signupAdmin);
 router.post("/login", adminLogin);
 
 router.post("/addRoute", addRoute);
-router.delete("/removeRoute", removeRoute);
-router.put("/updateRoute", updateRoute);
+router.delete("/removeRoute/:routeId", removeRoute);
+router.put("/updateRoute/:routeId", updateRoute); 
 router.get("/getAllRoutes", getAllRoutes);
 
 module.exports = router;
