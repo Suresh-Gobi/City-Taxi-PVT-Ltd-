@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
-const routeSchema = new mongoose.Schema({
+// Check if the model is already defined to avoid OverwriteModelError
+const Route = mongoose.models.Route || mongoose.model("Route", new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -26,11 +27,9 @@ const routeSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-});
+}));
 
 // Create a text index on the 'name', 'from', and 'to' fields
-routeSchema.index({ name: "text", from: "text", to: "text" });
-
-const Route = mongoose.model("Route", routeSchema);
+Route.schema.index({ name: "text", from: "text", to: "text" });
 
 module.exports = Route;
