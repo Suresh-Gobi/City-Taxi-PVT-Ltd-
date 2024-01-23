@@ -14,14 +14,8 @@ const addRoute = async (req, res) => {
     const decodedToken = jwt.verify(token.slice(7), "your-secret-key");
     const userId = decodedToken.userId;
 
-    // Check if the user exists or has the necessary role (you can customize this based on your authentication logic)
-    // For example, you might have a User model and check if the user is an admin or has the necessary role
-
-    // Assuming you have a User model, you can uncomment and customize the following lines:
-    // const user = await User.findById(userId);
-    // if (!user || !user.isAdmin) {
-    //   return res.status(403).json({ success: false, message: 'Permission denied' });
-    // }
+    // Check if the user exists or has the necessary role
+    // ...
 
     // Create a new route document
     const newRoute = new Route({
@@ -39,9 +33,10 @@ const addRoute = async (req, res) => {
     res.status(201).json({ success: true, route: savedRoute });
   } catch (error) {
     console.error("Error adding route:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    res.status(500).json({ success: false, message: error.message || "Internal Server Error" });
   }
 };
+
 
 const removeRoute = async (req, res) => {
   try {
