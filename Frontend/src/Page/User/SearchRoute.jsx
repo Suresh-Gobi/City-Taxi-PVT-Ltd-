@@ -27,6 +27,11 @@ const SearchRoutes = () => {
     }
   };
 
+  const handleConfirmBooking = () => {
+    // Add logic to handle the confirmation of the booking
+    console.log("Booking confirmed!");
+  };
+
   return (
     <div>
       <label>
@@ -53,7 +58,8 @@ const SearchRoutes = () => {
               <li key={route._id}>
                 {route.name} - {route.from} to {route.to} | Distance:{" "}
                 {route.distance} | Amount: {route.amount} | Duration:{" "}
-                {route.duration}
+                {route.duration}{' '}
+                <button onClick={handleConfirmBooking}>Confirm Booking</button>
               </li>
             ))}
           </ul>
