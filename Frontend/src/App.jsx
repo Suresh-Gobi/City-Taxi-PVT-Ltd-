@@ -14,6 +14,9 @@ import AdminDashboard from "./Page/Admin/Admin";
 
 import AdminLogin from "./Page/Admin/login";
 
+import Dashboard from "./Page/User/Dashboard";
+import SearchRoute from "./Page/User/SearchRoute";
+
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
@@ -32,6 +35,8 @@ function App() {
           <Route path="/driver/dash" element={<DriverDashboard />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dash" element={<AdminDashboard />} />
+          <Route path="/user/dash" element={<Dashboard />} />
+          <Route path="/user/search" element={<SearchRoute />} />
         </Routes>
       </BrowserRouter>
     </>

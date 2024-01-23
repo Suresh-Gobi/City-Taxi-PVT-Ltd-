@@ -1,13 +1,13 @@
 const express = require("express");
 const {
-  search,
+  searchRoutes,
   addRoute,
   allroute,
 } = require("../Controllers/user.controller");
 
 const router = express.Router();
 
-router.get("/search", search);
+router.get("/search", searchRoutes);
 router.post("/addRoute", addRoute);
 router.get("/allroute", allroute);
 

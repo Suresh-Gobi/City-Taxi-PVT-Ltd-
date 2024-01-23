@@ -1,19 +1,18 @@
 const Route = require("../models/Route.model");
 
-const search = async (req, res, next) => {
+const searchRoutes = async (req, res) => {
   try {
-    const { from, to } = req.query;
+    const { from, to } = req.body;
 
+    // Use Mongoose find to search for routes based on 'from' and 'to'
     const routes = await Route.find({
-      $text: {
-        $search: `${from} ${to}`,
-      },
+      $text: { $search: `${from} ${to}` }, // Use $text for text search
     });
 
     res.json({ routes });
   } catch (error) {
-    console.error("Search error:", error);
-    next(error);
+    console.error('Error during route search:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
@@ -51,7 +50,7 @@ const addRoute = async (req, res, next) => {
 };
 
 module.exports = {
-  search,
+  searchRoutes,
   allroute,
   addRoute,
 };

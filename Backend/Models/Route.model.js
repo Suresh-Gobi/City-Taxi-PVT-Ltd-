@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// Check if the model is already defined to avoid OverwriteModelError
 const Route = mongoose.models.Route || mongoose.model("Route", new mongoose.Schema({
   name: {
     type: String,
