@@ -1,8 +1,23 @@
 const Route = require("../models/Route.model");
+const jwt = require('jsonwebtoken');
 
 const searchRoutes = async (req, res) => {
   try {
     const { from, to } = req.query;
+
+    // Extract the token from the request headers
+    const token = req.headers.authorization;
+
+    if (!token) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // Verify the token and extract user information
+    const decodedToken = jwt.verify(token.slice(7), 'your-secret-key');
+
+    // Assuming your user ID is stored in the token
+    const userId = decodedToken.userId;
+    const username = decodedToken.username;
 
     // Use case-insensitive regex for search
     const routes = await Route.find({
@@ -12,13 +27,12 @@ const searchRoutes = async (req, res) => {
       ],
     });
 
-    res.json({ routes });
+    res.json({ routes, userId, username });
   } catch (error) {
     console.error('Error during route search:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
-
 
 
 const allroute = async (req, res, next) => {

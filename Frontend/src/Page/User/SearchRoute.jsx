@@ -1,16 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const SearchRoutes = () => {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [searchResult, setSearchResult] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const [userId, setUserId] = useState(""); // Assuming you have a way to get user ID from the token
+  const [token, setToken] = useState(""); // Assuming you have a way to set the token, maybe during login
+
+  useEffect(() => {
+    // Assuming you set the token during login or have a way to retrieve it
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+  }, []);
 
   const handleSearch = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/users/search?from=${from}&to=${to}`
+        `http://localhost:5000/api/users/search?from=${from}&to=${to}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data = await response.json();
 
@@ -20,6 +31,7 @@ const SearchRoutes = () => {
         );
       } else {
         setSearchResult(data.routes);
+
         setErrorMessage("");
       }
     } catch (error) {
@@ -28,26 +40,8 @@ const SearchRoutes = () => {
     }
   };
 
-  const handleConfirmBooking = async (routeId) => {
+  const handleConfirmBooking = async (routeId, userId, username) => {
     try {
-      // Retrieve the token from local storage
-      const token = localStorage.getItem('token');
-  
-      if (!token) {
-        console.error('Token not found in local storage');
-        return;
-      }
-  
-      // Get the user information from the token
-      const userInfo = getUserInfoFromToken(token); // Replace with your actual method to extract user information from the token
-  
-      if (!userInfo || !userInfo.userId) {
-        console.error('Unable to extract user information from the token');
-        return;
-      }
-  
-      const { userId, username } = userInfo;
-  
       const response = await fetch("http://localhost:5000/api/booking/create", {
         method: "POST",
         headers: {
@@ -62,16 +56,14 @@ const SearchRoutes = () => {
           username,
         }),
       });
-  
+
       const bookingData = await response.json();
-  
+
       console.log("Booking confirmed:", bookingData);
     } catch (error) {
       console.error("Error confirming booking:", error);
     }
   };
-  
-  
 
   return (
     <div>
@@ -100,7 +92,15 @@ const SearchRoutes = () => {
                 {route.name} - {route.from} to {route.to} | Distance:{" "}
                 {route.distance} | Amount: {route.amount} | Duration:{" "}
                 {route.duration}{" "}
-                <button onClick={() => handleConfirmBooking(route._id)}>
+                <button
+                  onClick={() =>
+                    handleConfirmBooking(
+                      route._id,
+                      route.userId,
+                      route.username
+                    )
+                  }
+                >
                   Confirm Booking
                 </button>
               </li>
