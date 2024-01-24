@@ -5,6 +5,7 @@ const SearchRoutes = () => {
   const [to, setTo] = useState("");
   const [searchResult, setSearchResult] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [userId, setUserId] = useState(""); // Assuming you have a way to get user ID from the token
 
   const handleSearch = async () => {
     try {
@@ -27,10 +28,50 @@ const SearchRoutes = () => {
     }
   };
 
-  const handleConfirmBooking = () => {
-    // Add logic to handle the confirmation of the booking
-    console.log("Booking confirmed!");
+  const handleConfirmBooking = async (routeId) => {
+    try {
+      // Retrieve the token from local storage
+      const token = localStorage.getItem('token');
+  
+      if (!token) {
+        console.error('Token not found in local storage');
+        return;
+      }
+  
+      // Get the user information from the token
+      const userInfo = getUserInfoFromToken(token); // Replace with your actual method to extract user information from the token
+  
+      if (!userInfo || !userInfo.userId) {
+        console.error('Unable to extract user information from the token');
+        return;
+      }
+  
+      const { userId, username } = userInfo;
+  
+      const response = await fetch("http://localhost:5000/api/booking/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          routeId,
+          pickupLocation: from, // Assuming 'from' is the pickup location
+          destination: to, // Assuming 'to' is the destination
+          userId,
+          username,
+        }),
+      });
+  
+      const bookingData = await response.json();
+  
+      console.log("Booking confirmed:", bookingData);
+    } catch (error) {
+      console.error("Error confirming booking:", error);
+    }
   };
+  
+  
 
   return (
     <div>
@@ -58,8 +99,10 @@ const SearchRoutes = () => {
               <li key={route._id}>
                 {route.name} - {route.from} to {route.to} | Distance:{" "}
                 {route.distance} | Amount: {route.amount} | Duration:{" "}
-                {route.duration}{' '}
-                <button onClick={handleConfirmBooking}>Confirm Booking</button>
+                {route.duration}{" "}
+                <button onClick={() => handleConfirmBooking(route._id)}>
+                  Confirm Booking
+                </button>
               </li>
             ))}
           </ul>

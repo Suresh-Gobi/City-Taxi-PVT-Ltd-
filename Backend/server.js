@@ -7,6 +7,7 @@ const userRoutes = require("./Routes/UserRoutes.routes.js");
 const authRouters = require("./Routes/Auth.routes.js");
 const driverRouters = require("./Routes/Driver.routes.js");
 const adminRouters = require("./Routes/Admin.routes.js");
+const bookingRouters = require("./Routes/Booking.routes.js");
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/auth", authRouters);
 app.use("/api/driver", driverRouters);
 app.use("/api/admin", adminRouters);
+app.use("/api/booking", bookingRouters);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
