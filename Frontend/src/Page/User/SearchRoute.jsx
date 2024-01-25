@@ -5,10 +5,10 @@ const SearchRoutes = () => {
   const [to, setTo] = useState("");
   const [searchResult, setSearchResult] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const [token, setToken] = useState(""); // Assuming you have a way to set the token, maybe during login
+  const [token, setToken] = useState("");
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
-    // Assuming you set the token during login or have a way to retrieve it
     const storedToken = localStorage.getItem("token");
     setToken(storedToken);
   }, []);
@@ -32,6 +32,9 @@ const SearchRoutes = () => {
       } else {
         setSearchResult(data.routes);
 
+        // Use the userId from the API response
+        setUserId(data.userId);
+
         setErrorMessage("");
       }
     } catch (error) {
@@ -40,8 +43,14 @@ const SearchRoutes = () => {
     }
   };
 
-  const handleConfirmBooking = async (routeId, userId, username) => {
+  const handleConfirmBooking = async (routeId) => {
     try {
+      if (!searchResult || searchResult.length === 0) {
+        console.error('No search results available.');
+        return;
+      }
+
+      // Use the userId state that you set during the search
       const response = await fetch("http://localhost:5000/api/booking/create", {
         method: "POST",
         headers: {
@@ -50,10 +59,8 @@ const SearchRoutes = () => {
         },
         body: JSON.stringify({
           routeId,
-          pickupLocation: from, // Assuming 'from' is the pickup location
-          destination: to, // Assuming 'to' is the destination
-          userId,
-          username,
+          pickupLocation: from,
+          destination: to,
         }),
       });
 
@@ -86,21 +93,14 @@ const SearchRoutes = () => {
       {searchResult && (
         <div>
           <h3>Search Results:</h3>
+          <p>User ID: {userId}</p>
           <ul>
             {searchResult.map((route) => (
               <li key={route._id}>
                 {route.name} - {route.from} to {route.to} | Distance:{" "}
                 {route.distance} | Amount: {route.amount} | Duration:{" "}
                 {route.duration}{" "}
-                <button
-                  onClick={() =>
-                    handleConfirmBooking(
-                      route._id,
-                      route.userId,
-                      route.username
-                    )
-                  }
-                >
+                <button onClick={() => handleConfirmBooking(route._id)}>
                   Confirm Booking
                 </button>
               </li>

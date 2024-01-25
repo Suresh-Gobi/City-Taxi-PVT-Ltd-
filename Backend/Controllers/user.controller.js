@@ -16,7 +16,7 @@ const searchRoutes = async (req, res) => {
     const decodedToken = jwt.verify(token.slice(7), 'your-secret-key');
 
     // Assuming your user ID is stored in the token
-    const userId = decodedToken.userId;
+    const _id = decodedToken.userId; // Change userId to _id
     const username = decodedToken.username;
 
     // Use case-insensitive regex for search
@@ -27,12 +27,13 @@ const searchRoutes = async (req, res) => {
       ],
     });
 
-    res.json({ routes, userId, username });
+    res.json({ routes, _id, username }); // Change userId to _id
   } catch (error) {
     console.error('Error during route search:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
 
 
 const allroute = async (req, res, next) => {
