@@ -114,7 +114,7 @@ const removeCar = async (req, res) => {
 const updateCar = async (req, res) => {
   try {
     const { carId } = req.params;
-    const { model, no, status } = req.body;
+    const { model, no, status, location } = req.body;
 
     // Verify the token and extract the driver ID
     const decodedToken = jwt.verify(req.headers.authorization.slice(7), 'your-secret-key');
@@ -129,8 +129,12 @@ const updateCar = async (req, res) => {
       return res.status(403).json({ message: 'Unauthorized to update this car' });
     }
 
-    // Update car details
-    const updatedCar = await Car.findByIdAndUpdate(carId, { model, no, status }, { new: true });
+    // Update car details, including the 'location' field
+    const updatedCar = await Car.findByIdAndUpdate(
+      carId,
+      { model, no, status, location },
+      { new: true }
+    );
 
     if (!updatedCar) {
       return res.status(404).json({ message: 'Car not found' });
@@ -142,6 +146,7 @@ const updateCar = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
 
 const getDriverInfo = async (req, res) => {
   try {

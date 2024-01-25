@@ -6,6 +6,9 @@ const carSchema = new mongoose.Schema({
     ref: "Driver",
     required: true,
   },
+  location:{
+    type: String,
+  },
   model: {
     type: String,
     required: true,

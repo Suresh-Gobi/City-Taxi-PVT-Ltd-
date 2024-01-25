@@ -145,45 +145,13 @@ const VehicleDetails = () => {
         Add Your Vehicle
       </Button>
       <Modal
-        title="Add Vehicle Details"
+        title={selectedCar ? 'Edit Vehicle Details' : 'Add Vehicle Details'}
         visible={visible}
         onCancel={handleCancel}
-        onOk={handleFormSubmit}
+        onOk={selectedCar ? handleFormSubmitUpdate : handleFormSubmit}
         confirmLoading={false}
       >
-        <Form form={form} layout="vertical" onFinish={handleFormSubmit}>
-          <Form.Item
-            label="Model"
-            name="model"
-            rules={[{ required: true, message: 'Please enter the model' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Number"
-            name="number"
-            rules={[{ required: true, message: 'Please enter the number' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Status"
-            name="status"
-            rules={[{ required: true, message: 'Please enter the status' }]}
-          >
-            <Input />
-          </Form.Item>
-        </Form>
-      </Modal>
-
-      <Modal
-        title="Add Vehicle Details"
-        visible={visible}
-        onCancel={handleCancel}
-        onOk={handleFormSubmitUpdate}
-        confirmLoading={false}
-      >
-        <Form form={form} layout="vertical" onFinish={handleFormSubmitUpdate}>
+        <Form form={form} layout="vertical" onFinish={selectedCar ? handleFormSubmitUpdate : handleFormSubmit}>
           <Form.Item
             label="Model"
             name="model"
@@ -211,7 +179,11 @@ const VehicleDetails = () => {
       <h2>All Cars</h2>
       {loading && <p>Loading cars...</p>}
       {cars.map((car) => (
-         <Card key={car._id} title={car.model} extra={<Button onClick={() => showModalUpdate(car)}>Edit</Button>}>
+        <Card
+          key={car._id}
+          title={car.model}
+          extra={<Button onClick={() => showModalUpdate(car)}>Edit</Button>}
+        >
           <p>Number: {car.no}</p>
           <p>Status: {car.status}</p>
         </Card>

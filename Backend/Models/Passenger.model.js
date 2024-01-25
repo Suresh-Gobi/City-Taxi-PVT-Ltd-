@@ -6,7 +6,6 @@ const passengerSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  // Add other fields specific to passengers
 });
 
 const Passenger = mongoose.model("Passenger", passengerSchema);
