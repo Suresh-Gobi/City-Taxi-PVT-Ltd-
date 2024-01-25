@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, Button, Form, Input, Card, Popconfirm } from 'antd';
+import React, { useState, useEffect } from "react";
+import { Modal, Button, Form, Input, Card, Popconfirm } from "antd";
 
 const VehicleDetails = () => {
   const [visible, setVisible] = useState(false);
@@ -32,27 +32,28 @@ const VehicleDetails = () => {
   const handleFormSubmitUpdate = async () => {
     try {
       const values = await form.validateFields();
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
 
       const response = await fetch(
         `http://localhost:5000/api/driver/updatecar/${selectedCar._id}`,
         {
-          method: 'PUT',
+          method: "PUT",
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             model: values.model,
             no: parseInt(values.number, 10),
             status: values.status,
+            location: values.location || null,
           }),
         }
       );
 
       if (response.ok) {
         // Car updated successfully
-        console.log('Car updated successfully');
+        console.log("Car updated successfully");
         setVisible(false); // Close the modal
         form.resetFields(); // Reset form fields after successful submission
 
@@ -65,7 +66,7 @@ const VehicleDetails = () => {
         // setError(data.message || 'Failed to update car details'); // You may handle errors differently
       }
     } catch (error) {
-      console.error('Error during handleFormSubmit:', error);
+      console.error("Error during handleFormSubmit:", error);
       // setError('Internal Server Error'); // You may handle errors differently
     }
   };
@@ -74,12 +75,12 @@ const VehicleDetails = () => {
     try {
       const values = await form.validateFields();
       // Assuming you have an API endpoint for adding car details
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/driver/addcar', {
-        method: 'POST',
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:5000/api/driver/addcar", {
+        method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           model: values.model,
@@ -90,7 +91,7 @@ const VehicleDetails = () => {
 
       if (response.ok) {
         // Car added successfully
-        console.log('Car added successfully');
+        console.log("Car added successfully");
         setVisible(false); // Close the modal
         form.resetFields(); // Reset form fields after successful submission
 
@@ -103,25 +104,28 @@ const VehicleDetails = () => {
         // setError(data.message || 'Failed to add car details'); // You may handle errors differently
       }
     } catch (error) {
-      console.error('Error during handleFormSubmit:', error);
+      console.error("Error during handleFormSubmit:", error);
       // setError('Internal Server Error'); // You may handle errors differently
     }
   };
 
   const handleRemoveCar = async (carId) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/driver/removecar/${carId}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `http://localhost:5000/api/driver/removecar/${carId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response.ok) {
         // Car removed successfully
-        console.log('Car removed successfully');
+        console.log("Car removed successfully");
         setConfirmRemove(false); // Close the confirmation modal
         // Fetch the updated list of cars
         fetchAllCars();
@@ -129,10 +133,10 @@ const VehicleDetails = () => {
         // Handle errors from the server
         const data = await response.json();
         // Handle errors
-        console.error('Failed to remove car:', data.message);
+        console.error("Failed to remove car:", data.message);
       }
     } catch (error) {
-      console.error('Error during handleRemoveCar:', error);
+      console.error("Error during handleRemoveCar:", error);
     }
   };
 
@@ -144,12 +148,12 @@ const VehicleDetails = () => {
   const fetchAllCars = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/driver/getcar', {
-        method: 'GET',
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:5000/api/driver/getcar", {
+        method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
@@ -160,10 +164,10 @@ const VehicleDetails = () => {
         // Handle errors from the server
         const data = await response.json();
         // Handle errors
-        console.error('Failed to fetch car details:', data.message);
+        console.error("Failed to fetch car details:", data.message);
       }
     } catch (error) {
-      console.error('Error during fetchAllCars:', error);
+      console.error("Error during fetchAllCars:", error);
     } finally {
       setLoading(false);
     }
@@ -180,31 +184,38 @@ const VehicleDetails = () => {
         Add Your Vehicle
       </Button>
       <Modal
-        title={selectedCar ? 'Edit Vehicle Details' : 'Add Vehicle Details'}
+        title={selectedCar ? "Edit Vehicle Details" : "Add Vehicle Details"}
         visible={visible}
         onCancel={handleCancel}
         onOk={selectedCar ? handleFormSubmitUpdate : handleFormSubmit}
         confirmLoading={false}
       >
-        <Form form={form} layout="vertical" onFinish={selectedCar ? handleFormSubmitUpdate : handleFormSubmit}>
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={selectedCar ? handleFormSubmitUpdate : handleFormSubmit}
+        >
           <Form.Item
             label="Model"
             name="model"
-            rules={[{ required: true, message: 'Please enter the model' }]}
+            rules={[{ required: true, message: "Please enter the model" }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             label="Number"
             name="number"
-            rules={[{ required: true, message: 'Please enter the number' }]}
+            rules={[{ required: true, message: "Please enter the number" }]}
           >
+            <Input />
+          </Form.Item>
+          <Form.Item label="Location" name="location">
             <Input />
           </Form.Item>
           <Form.Item
             label="Status"
             name="status"
-            rules={[{ required: true, message: 'Please enter the status' }]}
+            rules={[{ required: true, message: "Please enter the status" }]}
           >
             <Input />
           </Form.Item>
@@ -228,7 +239,10 @@ const VehicleDetails = () => {
                 cancelText="No"
                 visible={selectedCar === car._id && confirmRemove}
               >
-                <Button type="danger" onClick={() => showRemoveConfirmation(car._id)}>
+                <Button
+                  type="danger"
+                  onClick={() => showRemoveConfirmation(car._id)}
+                >
                   Remove
                 </Button>
               </Popconfirm>
