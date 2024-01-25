@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, Form, Input, Card } from 'antd';
+import { Modal, Button, Form, Input, Card, Popconfirm } from 'antd';
 
 const VehicleDetails = () => {
   const [visible, setVisible] = useState(false);
@@ -7,6 +7,7 @@ const VehicleDetails = () => {
   const [cars, setCars] = useState([]);
   const [selectedCar, setSelectedCar] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [confirmRemove, setConfirmRemove] = useState(false);
 
   const showModal = () => {
     setVisible(true);
@@ -24,6 +25,7 @@ const VehicleDetails = () => {
 
   const handleCancel = () => {
     setVisible(false);
+    setConfirmRemove(false); // Close the confirmation modal
     form.resetFields(); // Reset form fields when the modal is closed
   };
 
@@ -106,6 +108,39 @@ const VehicleDetails = () => {
     }
   };
 
+  const handleRemoveCar = async (carId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:5000/api/driver/removecar/${carId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        // Car removed successfully
+        console.log('Car removed successfully');
+        setConfirmRemove(false); // Close the confirmation modal
+        // Fetch the updated list of cars
+        fetchAllCars();
+      } else {
+        // Handle errors from the server
+        const data = await response.json();
+        // Handle errors
+        console.error('Failed to remove car:', data.message);
+      }
+    } catch (error) {
+      console.error('Error during handleRemoveCar:', error);
+    }
+  };
+
+  const showRemoveConfirmation = (carId) => {
+    setSelectedCar(carId);
+    setConfirmRemove(true);
+  };
+
   const fetchAllCars = async () => {
     try {
       setLoading(true);
@@ -182,7 +217,23 @@ const VehicleDetails = () => {
         <Card
           key={car._id}
           title={car.model}
-          extra={<Button onClick={() => showModalUpdate(car)}>Edit</Button>}
+          extra={
+            <>
+              <Button onClick={() => showModalUpdate(car)}>Edit</Button>
+              <Popconfirm
+                title="Are you sure you want to delete this car?"
+                onConfirm={() => handleRemoveCar(car._id)}
+                onCancel={() => setConfirmRemove(false)}
+                okText="Yes"
+                cancelText="No"
+                visible={selectedCar === car._id && confirmRemove}
+              >
+                <Button type="danger" onClick={() => showRemoveConfirmation(car._id)}>
+                  Remove
+                </Button>
+              </Popconfirm>
+            </>
+          }
         >
           <p>Number: {car.no}</p>
           <p>Status: {car.status}</p>
