@@ -11,6 +11,10 @@ const Overview = lazy(() => import("./Dashboard/Overview"));
 
 const VehicleDetails = lazy(() => import("./Vehicle/VehicleDetails"));
 
+const Booking = lazy(() => import("./Booking/Booking"));
+
+const Earnings = lazy(() => import("./Revenue/Earnings"));
+
 function getItem(label, key, icon, children, type) {
   return {
     key,
@@ -22,7 +26,11 @@ function getItem(label, key, icon, children, type) {
 }
 
 const items = [
-  getItem("Dashboard", "sub1", <MailOutlined />, [getItem("Overview", "1")]),
+  getItem("Dashboard", "sub1", <MailOutlined />, [
+    getItem("Overview", "1"),
+    getItem("Bookings", "3"),
+    getItem("Revenue", "4"),
+  ]),
   getItem("Manage Vehicle", "sub2", <AppstoreOutlined />, [
     getItem("My Vehicle", "2"),
   ]),
@@ -54,8 +62,10 @@ const App = () => {
       />
       {/* Conditionally render the content based on the selected menu item */}
       <Suspense fallback={<div>Loading...</div>}>
-      {selectedMenuItem === "1" && <Overview />}
+        {selectedMenuItem === "1" && <Overview />}
         {selectedMenuItem === "2" && <VehicleDetails />}
+        {selectedMenuItem === "3" && <Booking />}
+        {selectedMenuItem === "4" && <Earnings />}
       </Suspense>
     </>
   );
