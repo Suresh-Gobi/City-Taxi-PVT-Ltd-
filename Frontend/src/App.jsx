@@ -2,6 +2,7 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import Header from "./Components/Header/header";
+import Footer from "./Components/Footer/footer";
 import Home from "./Page/Home/home";
 import DriverSignup from "./Page/Signup/DriverSignup";
 import UserSignup from "./Page/Signup/UserSignup";
@@ -38,6 +39,7 @@ function App() {
           <Route path="/user/dash" element={<Dashboard />} />
           <Route path="/user/search" element={<SearchRoute />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </>
   );

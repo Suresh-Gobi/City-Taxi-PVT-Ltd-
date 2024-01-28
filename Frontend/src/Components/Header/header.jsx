@@ -1,29 +1,40 @@
-import React from 'react';
-import { Layout, Menu, Row, Col, Button } from 'antd';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Layout, Menu, Row, Col, Button } from "antd";
+import { Link } from "react-router-dom";
 import {
   HomeOutlined,
   InfoCircleOutlined,
   AppstoreOutlined,
   QuestionCircleOutlined,
-  UserAddOutlined,
-  LoginOutlined,
   CarOutlined,
-} from '@ant-design/icons';
+  LogoutOutlined,
+} from "@ant-design/icons";
 
 const { Header } = Layout;
 
-export default function HeaderMenu() {
+const HeaderMenu = () => {
+  const token = localStorage.getItem("token");
+
+  const handleLogout = () => {
+    // Implement your logout logic here
+    // For example, clear the token from local storage
+    localStorage.removeItem("token");
+    // Add any additional logout logic you may need
+
+    // Reload the page or redirect to the home page
+    window.location.reload();
+  };
+
   return (
     <Header>
       <Row justify="space-between">
         <Col>
-          <div className="logo" style={{ color: 'white', fontSize: '20px' }}>
+          <div className="logo" style={{ color: "white", fontSize: "20px" }}>
             <CarOutlined /> City Taxi
           </div>
         </Col>
         <Col>
-          <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['home']}>
+          <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["home"]}>
             <Menu.Item key="home" icon={<HomeOutlined />}>
               <Link to="/">Home</Link>
             </Menu.Item>
@@ -40,17 +51,30 @@ export default function HeaderMenu() {
         </Col>
         <Col>
           <div>
-            <Button type="primary" style={{ marginRight: '10px' }}>
-              <Link to="/signup" style={{ color: 'white' }}>
-                Signup
-              </Link>
-            </Button>
-            <Button type="ghost" style={{ color: 'white' }}>
-              <Link to="/login">Login</Link>
-            </Button>
+            {token ? (
+              <Button type="danger" style={{ marginRight: "10px", color: "white" }} onClick={handleLogout} icon={<LogoutOutlined />}>
+                Logout
+              </Button>
+            ) : (
+              <>
+                <Button type="primary" style={{ marginRight: "10px" }}>
+                  <Link to="user/signup" style={{ color: "white" }}>
+                    Signup
+                  </Link>
+                </Button>
+                <Button type="ghost" style={{ color: "white" }}>
+                  <Link to="user/login">Login</Link>
+                </Button>
+                <Button type="ghost" style={{ color: "yellow" }}>
+                  <Link to="driver/login">Driver Access</Link>
+                </Button>
+              </>
+            )}
           </div>
         </Col>
       </Row>
     </Header>
   );
-}
+};
+
+export default HeaderMenu;

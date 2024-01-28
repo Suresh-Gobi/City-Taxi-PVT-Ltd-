@@ -85,11 +85,29 @@ export default function Booking() {
 
   return (
     <div>
-      <h1>Booking Details</h1>
+      <h3
+        style={{
+          position: "relative",
+          flexWrap: "wrap",
+          marginLeft: "50vh",
+          display: "flex",
+          marginTop: "-40vh",
+        }}
+      >
+        Your Pending Bookings
+      </h3>
       {loading ? (
         <Spin size="large" />
       ) : (
-        <div style={{ display: "flex", flexWrap: "wrap" }}>
+        <div
+          style={{
+            position: "relative",
+            flexWrap: "wrap",
+            marginLeft: "50vh",
+            display: "flex",
+            marginTop: "-1vh",
+          }}
+        >
           {bookings.map((booking) => (
             <Card key={booking._id} style={{ width: 300, margin: 16 }}>
               <Meta title="User" description={booking.user} />

@@ -179,80 +179,82 @@ const VehicleDetails = () => {
 
   return (
     <div>
-      <h2>Vehicle Details</h2>
-      <Button type="primary" onClick={showModal}>
-        Add Your Vehicle
-      </Button>
-      <Modal
-        title={selectedCar ? "Edit Vehicle Details" : "Add Vehicle Details"}
-        visible={visible}
-        onCancel={handleCancel}
-        onOk={selectedCar ? handleFormSubmitUpdate : handleFormSubmit}
-        confirmLoading={false}
-      >
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={selectedCar ? handleFormSubmitUpdate : handleFormSubmit}
+      <section>
+        <h2>Vehicle Details</h2>
+        <Button type="primary" onClick={showModal}>
+          Add Your Vehicle
+        </Button>
+        <Modal
+          title={selectedCar ? "Edit Vehicle Details" : "Add Vehicle Details"}
+          visible={visible}
+          onCancel={handleCancel}
+          onOk={selectedCar ? handleFormSubmitUpdate : handleFormSubmit}
+          confirmLoading={false}
         >
-          <Form.Item
-            label="Model"
-            name="model"
-            rules={[{ required: true, message: "Please enter the model" }]}
+          <Form
+            form={form}
+            layout="vertical"
+            onFinish={selectedCar ? handleFormSubmitUpdate : handleFormSubmit}
           >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Number"
-            name="number"
-            rules={[{ required: true, message: "Please enter the number" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item label="Location" name="location">
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Status"
-            name="status"
-            rules={[{ required: true, message: "Please enter the status" }]}
-          >
-            <Input />
-          </Form.Item>
-        </Form>
-      </Modal>
+            <Form.Item
+              label="Model"
+              name="model"
+              rules={[{ required: true, message: "Please enter the model" }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              label="Number"
+              name="number"
+              rules={[{ required: true, message: "Please enter the number" }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item label="Location" name="location">
+              <Input />
+            </Form.Item>
+            <Form.Item
+              label="Status"
+              name="status"
+              rules={[{ required: true, message: "Please enter the status" }]}
+            >
+              <Input />
+            </Form.Item>
+          </Form>
+        </Modal>
 
-      <h2>All Cars</h2>
-      {loading && <p>Loading cars...</p>}
-      {cars.map((car) => (
-        <Card
-          key={car._id}
-          title={car.model}
-          extra={
-            <>
-              <Button onClick={() => showModalUpdate(car)}>Edit</Button>
-              <Popconfirm
-                title="Are you sure you want to delete this car?"
-                onConfirm={() => handleRemoveCar(car._id)}
-                onCancel={() => setConfirmRemove(false)}
-                okText="Yes"
-                cancelText="No"
-                visible={selectedCar === car._id && confirmRemove}
-              >
-                <Button
-                  type="danger"
-                  onClick={() => showRemoveConfirmation(car._id)}
+        <h2>All Cars</h2>
+        {loading && <p>Loading cars...</p>}
+        {cars.map((car) => (
+          <Card
+            key={car._id}
+            title={car.model}
+            extra={
+              <>
+                <Button onClick={() => showModalUpdate(car)}>Edit</Button>
+                <Popconfirm
+                  title="Are you sure you want to delete this car?"
+                  onConfirm={() => handleRemoveCar(car._id)}
+                  onCancel={() => setConfirmRemove(false)}
+                  okText="Yes"
+                  cancelText="No"
+                  visible={selectedCar === car._id && confirmRemove}
                 >
-                  Remove
-                </Button>
-              </Popconfirm>
-            </>
-          }
-        >
-          <p>Number: {car.no}</p>
-          <p>Status: {car.status}</p>
-        </Card>
-      ))}
+                  <Button
+                    type="danger"
+                    onClick={() => showRemoveConfirmation(car._id)}
+                  >
+                    Remove
+                  </Button>
+                </Popconfirm>
+              </>
+            }
+          >
+            <p>Number: {car.no}</p>
+            <p>Status: {car.status}</p>
+          </Card>
+        ))}
+      </section>
     </div>
   );
 };
