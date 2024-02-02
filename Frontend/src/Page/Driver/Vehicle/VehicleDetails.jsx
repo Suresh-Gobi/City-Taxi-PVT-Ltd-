@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Input, Card, Popconfirm } from "antd";
+import './style.css';
 
 const VehicleDetails = () => {
   const [visible, setVisible] = useState(false);
@@ -175,13 +176,13 @@ const VehicleDetails = () => {
 
   useEffect(() => {
     fetchAllCars();
-  }, []); // Fetch car details when the component mounts
+  }, []);
 
   return (
-    <div>
-      <section>
-        <h2>Vehicle Details</h2>
-        <Button type="primary" onClick={showModal}>
+    <div className="container ">
+      <section className="section-vh">
+        <h2>Vehicle Details</h2><hr/><br/>
+        <Button type="primary" onClick={showModal} className="btn-add-vh">
           Add Your Vehicle
         </Button>
         <Modal
@@ -223,7 +224,7 @@ const VehicleDetails = () => {
           </Form>
         </Modal>
 
-        <h2>All Cars</h2>
+        <h2>Your Vehicle Details</h2><br/>
         {loading && <p>Loading cars...</p>}
         {cars.map((car) => (
           <Card

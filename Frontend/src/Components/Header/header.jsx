@@ -52,8 +52,13 @@ const HeaderMenu = () => {
         <Col>
           <div>
             {token ? (
-              <Button type="danger" style={{ marginRight: "10px", color: "white" }} onClick={handleLogout} icon={<LogoutOutlined />}>
-                Logout
+              <Button
+                type="danger"
+                style={{ marginRight: "10px", color: "white" }}
+                onClick={handleLogout}
+                icon={<LogoutOutlined />}
+              >
+                <Link to="/p">Logout</Link>
               </Button>
             ) : (
               <>

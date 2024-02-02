@@ -10,12 +10,9 @@ const addRoute = async (req, res) => {
       return res.status(401).json({ success: false, message: "Unauthorized" });
     }
 
-    // Verify the token and extract necessary information (e.g., user ID)
     const decodedToken = jwt.verify(token.slice(7), "your-secret-key");
     const userId = decodedToken.userId;
 
-    // Check if the user exists or has the necessary role
-    // ...
 
     // Create a new route document
     const newRoute = new Route({
@@ -47,18 +44,9 @@ const removeRoute = async (req, res) => {
       return res.status(401).json({ success: false, message: "Unauthorized" });
     }
 
-    // Verify the token and extract necessary information (e.g., user ID)
     const decodedToken = jwt.verify(token.slice(7), "your-secret-key");
     const userId = decodedToken.userId;
 
-    // Check if the user exists or has the necessary role (you can customize this based on your authentication logic)
-    // For example, you might have a User model and check if the user is an admin or has the necessary role
-
-    // Assuming you have a User model, you can uncomment and customize the following lines:
-    // const user = await User.findById(userId);
-    // if (!user || !user.isAdmin) {
-    //   return res.status(403).json({ success: false, message: 'Permission denied' });
-    // }
 
     // Get the route ID from the request parameters
     const { routeId } = req.params;
@@ -93,18 +81,8 @@ const updateRoute = async (req, res) => {
       return res.status(401).json({ success: false, message: "Unauthorized" });
     }
 
-    // Verify the token and extract necessary information (e.g., user ID)
     const decodedToken = jwt.verify(token.slice(7), "your-secret-key");
     const userId = decodedToken.userId;
-
-    // Check if the user exists or has the necessary role (you can customize this based on your authentication logic)
-    // For example, you might have a User model and check if the user is an admin or has the necessary role
-
-    // Assuming you have a User model, you can uncomment and customize the following lines:
-    // const user = await User.findById(userId);
-    // if (!user || !user.isAdmin) {
-    //   return res.status(403).json({ success: false, message: 'Permission denied' });
-    // }
 
     // Get the route ID from the request parameters
     const { routeId } = req.params;

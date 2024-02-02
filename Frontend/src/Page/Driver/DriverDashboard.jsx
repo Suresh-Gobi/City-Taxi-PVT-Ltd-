@@ -37,7 +37,7 @@ const items = [
   {
     type: "divider",
   },
-  getItem("Settings", "sub4", <SettingOutlined />, [getItem("Option 9", "9")]),
+  getItem("Settings", "sub4", <SettingOutlined />, [getItem("Account Settings", "9")]),
 ];
 
 const App = () => {

@@ -1,0 +1,11 @@
+.container{
+    position: relative;
+    margin-left: 40vh;
+    margin-top: -35vh;
+    margin-bottom: 55vh;
+}
+
+.section-card{
+    display: flex;
+    
+}

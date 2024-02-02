@@ -132,9 +132,6 @@ const updateCar = async (req, res) => {
     );
     const driverId = decodedToken.userId;
 
-    // Check if the driver exists
-    // This step is optional, and you may skip it depending on your use case
-    // If you want to enforce that the driver owns the car being updated
     const driverOwnsCar = await Car.exists({ _id: carId, driver: driverId });
 
     if (!driverOwnsCar) {

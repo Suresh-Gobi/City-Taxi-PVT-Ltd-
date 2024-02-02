@@ -24,6 +24,10 @@ const bookingSchema = new mongoose.Schema({
     enum: ["Pending", "Accepted", "Completed", "Cancelled"],
     default: "Pending",
   },
+  route: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Route",
+  },
 });
 
 const Booking = mongoose.model("Booking", bookingSchema);
