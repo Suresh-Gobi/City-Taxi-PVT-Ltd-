@@ -1,26 +1,23 @@
 import React from "react";
-import './style.css';
+import "./style.css";
 
-export default function () {
+export default function Home() {
   return (
-    <div>
-      <div class="hero">
-        <section class="hero-left">
-          <h1>
-            All your files are in one secure location, accessible anywhere.
-          </h1>
+    <div className="container">
+      <div className="hero">
+        <section className="hero-left">
+          <h1>Your Reliable Taxi Service, Anywhere You Need to Go.</h1>
           <p>
-            Lorem ipsum is a placeholder text commonly used to demonstrate the
-            visual form of a document or a typeface without relying on
-            meaningful content.
+            Experience seamless and safe transportation with our reliable taxi
+            service. Lorem ipsum is a placeholder text commonly used to
+            demonstrate the visual form of a document or a typeface without
+            relying on meaningful content.
           </p>
 
-          <a href="#">Get Started</a>
+          <a href="#">Book Now</a>
         </section>
 
-        <section class="right">
-          <img src="images/hero-illustration.svg" alt="Hero illustration" />
-        </section>
+        <section className="right"></section>
       </div>
     </div>
   );

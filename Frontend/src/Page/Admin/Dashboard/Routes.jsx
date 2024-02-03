@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Input, Card } from "antd";
+import './style.css';
 
 const Routes = () => {
   const [visible, setVisible] = useState(false);
@@ -153,7 +154,7 @@ console.log("JWT Token:", token);
   }, []); // Fetch route details when the component mounts
 
   return (
-    <div>
+    <div className="section-vh container" style={{}}>
       <h2>Route Details</h2>
       <Button type="primary" onClick={showModal}>
         Add Route
