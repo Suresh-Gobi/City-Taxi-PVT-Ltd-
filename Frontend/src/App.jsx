@@ -8,6 +8,9 @@ import DriverSignup from "./Page/Signup/DriverSignup";
 import UserSignup from "./Page/Signup/UserSignup";
 import UserLogin from "./Page/Login/UserLogin";
 import DriverLogin from "./Page/Login/DriverLogin";
+import Confirmed from "./Page/Driver/Booking/Confirmed";
+import Rate from "./Page/Driver/Booking/Rate";
+import End from "./Page/Driver/Booking/End";
 
 import DriverDashboard from "./Page/Driver/DriverDashboard";
 
@@ -38,6 +41,9 @@ function App() {
           <Route path="/admin/dash" element={<AdminDashboard />} />
           <Route path="/user/dash" element={<Dashboard />} />
           <Route path="/user/search" element={<SearchRoute />} />
+          <Route path="/user/confirmed" element={<Confirmed />} />
+          <Route path="/user/rate" element={<Rate />} />
+          <Route path="/user/end" element={<End />} />
         </Routes>
         <Footer />
       </BrowserRouter>

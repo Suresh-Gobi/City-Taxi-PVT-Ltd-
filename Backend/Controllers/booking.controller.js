@@ -1,6 +1,8 @@
 const Booking = require("../Models/Booking.model");
 const Car = require("../Models/Car.model");
+const Route = require("../Models/Route.model");
 const User = require("../Models/User.model");
+const Rating = require("../Models/Rating.model");
 const jwt = require("jsonwebtoken");
 
 const mongoose = require("mongoose");
@@ -66,17 +68,17 @@ const confirmBooking = async (req, res) => {
     const booking = await Booking.findById(bookingId);
 
     if (!booking) {
-      return res.status(404).json({ error: 'Booking not found' });
+      return res.status(404).json({ error: "Booking not found" });
     }
 
     // Update the booking status to 'Accepted'
-    booking.status = 'Accepted';
+    booking.status = "Accepted";
     await booking.save();
 
-    res.json({ success: true, message: 'Booking confirmed successfully' });
+    res.json({ success: true, message: "Booking confirmed successfully" });
   } catch (error) {
-    console.error('Error confirming booking:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error confirming booking:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -101,9 +103,51 @@ const completeBooking = async (req, res) => {
   }
 };
 
+const getTotalAmount = async (req, res) => {
+  try {
+    // Fetch all routes
+    const routes = await Route.find();
+
+    // Calculate total amount
+    const totalAmount = routes.reduce((sum, route) => sum + route.amount, 0);
+
+    res.json({ totalAmount });
+  } catch (error) {
+    console.error("Error getting total amount:", error);
+    res.status(500).json({ error: `Internal Server Error: ${error.message}` });
+  }
+};
+
+const createRating = async (req, res) => {
+  try {
+    const { rating, description } = req.body;
+
+    // Validate input
+    if (!rating || rating < 1 || rating > 5) {
+      return res.status(400).json({ error: "Invalid rating value" });
+    }
+
+    // Create a new rating
+    const newRating = new Rating({
+      rating,
+      description,
+    });
+
+    // Save the rating to the database
+    await newRating.save();
+
+    res.status(201).json(newRating);
+  } catch (error) {
+    console.error("Error creating rating:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   createBooking,
   getAllBookings,
   confirmBooking,
   completeBooking,
+  getTotalAmount,
+  createRating,
 };

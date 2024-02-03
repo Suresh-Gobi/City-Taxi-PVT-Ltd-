@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Input, Button, Card, Typography, notification, Spin } from "antd";
 import { SearchOutlined, CheckOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 const { Title, Text } = Typography;
 
@@ -13,9 +14,11 @@ const SearchRoutes = () => {
   const [userId, setUserId] = useState("");
   const [loading, setLoading] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
+
     setToken(storedToken);
   }, []);
 
@@ -82,6 +85,7 @@ const SearchRoutes = () => {
       // Simulate a 10-second timeout for the loading spinner
       setTimeout(() => {
         setConfirmLoading(false);
+        navigate("/user/confirmed");
       }, 10000);
     } catch (error) {
       console.error("Error confirming booking:", error);

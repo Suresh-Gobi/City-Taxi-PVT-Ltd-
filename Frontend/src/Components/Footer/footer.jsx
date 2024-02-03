@@ -5,7 +5,7 @@ const { Footer } = Layout;
 
 const AppFooter = () => {
   return (
-    <Footer style={{ backgroundColor: '#001529', color: 'white' }}>
+    <Footer style={{ backgroundColor: '#001529', color: 'white', position: 'relative', marginTop: '80vh', }}>
       <Row justify="space-around" align="middle">
         <Col span={8}>
           <div>
